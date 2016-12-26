@@ -9,23 +9,23 @@ def load_data(filepath):
     if not os.path.exists(filepath):
         return None
     with open(filepath,'r',encoding='cp1251') as data_file:
-       data = json.load(data_file)
-    return data
+       bars_info = json.load(data_file)
+    return bars_info
 
-def get_biggest_bar(data):
-    sorted_data = sorted(data, key=lambda x: x['SeatsCount'])
+def get_biggest_bar(bars):
+    sorted_data = sorted(bars, key=lambda x: x['SeatsCount'])
     return sorted_data[len(sorted_data)-1]['Name']
 
-def get_smallest_bar(data):
-    sorted_data = sorted(data, key=lambda x: x['SeatsCount'])
+def get_smallest_bar(bars):
+    sorted_data = sorted(bars, key=lambda x: x['SeatsCount'])
     return sorted_data[0]['Name']
 
-def get_closest_bar(data, longitude, latitude):
-    coordinates_array = [{'name': dt['Name'], 'latitude': float(dt['Latitude_WGS84']),
-                          'longitude': float(dt['Longitude_WGS84']),
-                          'distance': vincenty((float(dt['Latitude_WGS84']), float(dt['Longitude_WGS84'])),
+def get_closest_bar(bars_info, longitude, latitude):
+    coordinates_array = [{'name': bars['Name'], 'latitude': float(bars['Latitude_WGS84']),
+                          'longitude': float(bars['Longitude_WGS84']),
+                          'distance': vincenty((float(bars['Latitude_WGS84']), float(bars['Longitude_WGS84'])),
                                                (latitude, longitude)).km}
-                         for dt in data]
+                         for bars in bars_info]
     return (min(coordinates_array , key=lambda x: x['distance']))['name']
 
 
