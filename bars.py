@@ -10,12 +10,12 @@ def load_data(filepath):
     return bars_info
 
 def get_biggest_bar(bars):
-    sorted_data = sorted(bars, key=lambda x: x['SeatsCount'])
-    return sorted_data[len(sorted_data)-1]['Name']
+    result = max(bars, key=lambda tmp: tmp.get("SeatsCount", float('inf')))
+    return result['Name']
 
 def get_smallest_bar(bars):
-    sorted_data = sorted(bars, key=lambda x: x['SeatsCount'])
-    return sorted_data[0]['Name']
+    result = min(bars , key=lambda tmp: tmp.get("SeatsCount", float('inf')))
+    return result['Name']
 
 def get_closest_bar(bars_info, longitude, latitude):
     coordinates_array = [{'name': bars['Name'], 'latitude': float(bars['Latitude_WGS84']),
